@@ -11,19 +11,40 @@ with open("token.txt", "r") as f:
 	token = f.readline().strip()
 
 
-client = discord.Client(intents = discord.Intents.all())
 
+client = commands.Bot(command_prefix = "!")
 @client.event
 async def on_ready():
 	print("We have logged in")
+
+@client.command()
+async def add(ctx, *args):
+	#!add workout reps weight 
+	json_string = '''
+		{
+			{ctx.author.id}: [
+				{date}: [
+					{exercise}:{
+						name: 
+						weight:
+						reps:
+						sets:
+					}
+				]
+				{date}
+				{date}
+			]
+		}
 	
-@client.event
-async def on_message(message):
-	if message.content.find("!hello") != -1:
-		await message.channel.send("Hi")
-	
-	if message.content.find("!end") != -1:
-		exit()
+	'''
+@client.command()
+async def test(ctx):
+	await ctx.send(ctx.author.id)
+
+
+@client.command()
+async def end(ctx):
+	exit()
 
 print(token)
 client.run(token)
