@@ -19,24 +19,25 @@ async def on_ready():
 
 @client.command()
 async def add(ctx, *args):
-	#!add workout reps weight 
-	json_string = '''
-		{
-			{ctx.author.id}: [
-				{date}: [
-					{exercise}:{
-						name: 
-						weight:
-						reps:
-						sets:
-					}
-				]
-				{date}
-				{date}
-			]
-		}
-	
-	'''
+	#!add workout to dictionary
+	with open("workouts.json", "r") as f:
+		data = json.load(f)
+		if(args[0] in data.keys()):
+			await ctx.send("already logged")
+		else:
+			data[args[0]] = int(args[1])
+			with open("workouts.json", "w") as f:
+				json.dump(data, f)
+
+@client.command()
+async def printWorkouts(ctx):
+	with open("workouts.json", "r") as f:
+		data = json.load(f)
+		for key in data.keys():
+			await ctx.send(str(key) + " : " + str(data[key]))
+
+
+
 @client.command()
 async def test(ctx):
 	await ctx.send(ctx.author.id)
