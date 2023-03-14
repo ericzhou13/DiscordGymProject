@@ -11,11 +11,18 @@ with open("token.txt", "r") as f:
 	token = f.readline().strip()
 
 
-
 client = commands.Bot(command_prefix = "!")
 @client.event
 async def on_ready():
 	print("We have logged in")
+
+@client.event
+async def on_message(message):
+	if(message.author.id == 236916500185874433):
+		await message.channel.send("Stephen please die")
+		
+		
+
 
 @client.command()
 async def add(ctx, *args):
@@ -28,6 +35,19 @@ async def add(ctx, *args):
 			data[args[0]] = int(args[1])
 			with open("workouts.json", "w") as f:
 				json.dump(data, f)
+				
+@client.command()
+async def delete(ctx, *args):
+
+	with open("workouts.json", "r") as f:
+		data = json.load(f)
+		if(args[0] in data.keys()):
+			del data[args[0]]
+			with open("workouts.json", "w") as f:
+				json.dump(data, f)
+			await ctx.send("deleted")
+		else:
+			await ctx.send("not in dictionary")
 
 @client.command()
 async def printWorkouts(ctx):
